@@ -19,9 +19,11 @@ const Signup = () => {
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("working");
     e.preventDefault();
     try {
       await auth.createUserWithEmailAndPassword(email, password);
+      router.push("/home");
     } catch (error) {
       console.error("회원가입 오류: ", error);
     }
@@ -44,8 +46,8 @@ const Signup = () => {
               onChange={onChange}
             />
           </div>
+          <button type="submit">Signup</button>
         </form>
-        <button type="submit">Signup</button>
       </div>
       <style jsx>{`
         .container {
@@ -65,7 +67,12 @@ const Signup = () => {
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          row-gap: 20px;
+        }
+        form {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
         span {
           display: inline-block;

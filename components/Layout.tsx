@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import { MdOutlineLight } from "react-icons/md";
 import { useRouter } from "next/router";
+import { auth } from "@/lib/firebase";
 
 const Layout = ({ children }: React.PropsWithChildren) => {
-  const auth = false;
   const router = useRouter();
   const onClick = () => {
     router.push("/");
   };
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        router.push("/login");
+      } else {
+        setIsAuth(true);
+      }
+    });
+  }, []);
 
   return (
     <div className="container">
@@ -17,13 +28,13 @@ const Layout = ({ children }: React.PropsWithChildren) => {
           <MdOutlineLight />
           <span>Daily Record</span>
         </div>
-        {auth ? (
+        {isAuth ? (
           <span className="login">Logout</span>
         ) : (
           <span className="login">Login</span>
         )}
       </div>
-      {auth ? (
+      {isAuth ? (
         <div className="inner-container">
           <NavBar />
           <div>{children}</div>
