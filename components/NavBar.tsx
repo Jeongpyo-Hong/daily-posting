@@ -1,36 +1,42 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 const NavBar = () => {
+  const router = useRouter();
+
   return (
     <nav>
-      <div>
-        <button className="nav">Home</button>
-        <button className="nav">Posting</button>
-      </div>
-      <button className="nav">Login</button>
+      <Link href="/">
+        <div className={router.pathname === "/" ? "active" : ""}>Home</div>
+      </Link>
+      <Link href="/post">
+        <div className={router.pathname === "/post" ? "active" : ""}>Post</div>
+      </Link>
+      <Link href="/login">
+        <div className={router.pathname === "/login" ? "active" : ""}>
+          Login
+        </div>
+      </Link>
       <style jsx>{`
         nav {
-          height: 100%;
+          background-color: #f0f0f0;
           color: black;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
+          box-sizing: border-box;
+          border-radius: 10px;
+          padding: 10px;
         }
-        nav > div {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .nav {
+        div {
           font-size: 20px;
           font-weight: 800;
-          text-align: left;
+          padding: 10px;
         }
-        .nav:not(:first-child) {
-          margin-top: 14px;
+        div.active {
+          color: tomato;
         }
-        .nav:last-child {
-          margin-bottom: 14px;
+        div:hover {
+          background-color: white;
+          border-radius: 10px;
         }
       `}</style>
     </nav>
