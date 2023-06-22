@@ -19,6 +19,24 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+button {
+  font-family: "cafe24", "Cafe24Oneprettynight", cafe24;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+input {
+  border: none;
+}
+
 /* reset */
 html,
 body,
@@ -142,16 +160,4 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}
-button {
-  font-family: "cafe24", "Cafe24Oneprettynight", cafe24;
-  background: none;
-  border: none;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-}
-a {
-  text-decoration: none;
-  color: black;
 }

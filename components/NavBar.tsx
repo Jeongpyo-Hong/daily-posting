@@ -7,14 +7,14 @@ const NavBar = () => {
 
   return (
     <nav>
-      <Link href="/">
-        <div className={router.pathname === "/" ? "active" : ""}>Home</div>
+      <Link href="/home">
+        <div className={router.pathname === "/home" ? "active" : ""}>Home</div>
       </Link>
       <Link href="/post">
         <div className={router.pathname === "/post" ? "active" : ""}>Post</div>
       </Link>
-      <Link href="/login">
-        <div className={router.pathname === "/login" ? "active" : ""}>
+      <Link href="/contact">
+        <div className={router.pathname === "/contact" ? "active" : ""}>
           Contact
         </div>
       </Link>

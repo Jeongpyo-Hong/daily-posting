@@ -1,10 +1,11 @@
+import Head from "next/head";
 import React from "react";
 
 const Seo = () => {
   return (
-    <div>
-      <head>Daily Hong</head>
-    </div>
+    <Head>
+      <title>Daily Hong</title>
+    </Head>
   );
 };
 

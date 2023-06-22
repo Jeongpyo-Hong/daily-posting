@@ -9,7 +9,7 @@ const HomeInfo = () => {
       <div className="play-container">
         <div className="title">
           <MdOutlineMusicNote />
-          PlayList
+          My PlayList
         </div>
         <ul>
           {playList.map((song) => (
@@ -31,7 +31,7 @@ const HomeInfo = () => {
       <div className="movie-container">
         <div className="title">
           <MdOutlineLocalMovies />
-          MovieList
+          My MovieList
         </div>
         <ul>
           {movieList.map((movie) => (

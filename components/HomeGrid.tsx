@@ -54,7 +54,7 @@ const HomeGrid = () => {
           max-height: 100%;
           object-fit: contain;
           border-radius: 12px;
-          box-shadow: 0 0 3px 0 #eee;
+          box-shadow: 0 0 3px 1px #c5c5c5;
           transition: transform 0.3s ease;
         }
         img:hover {

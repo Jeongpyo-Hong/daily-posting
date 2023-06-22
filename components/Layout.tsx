@@ -1,9 +1,10 @@
 import React from "react";
 import NavBar from "./NavBar";
-import { MdNightlight } from "react-icons/md";
+import { MdOutlineLight } from "react-icons/md";
 import { useRouter } from "next/router";
 
 const Layout = ({ children }: React.PropsWithChildren) => {
+  const auth = false;
   const router = useRouter();
   const onClick = () => {
     router.push("/");
@@ -13,15 +14,24 @@ const Layout = ({ children }: React.PropsWithChildren) => {
     <div className="container">
       <div className="title" onClick={onClick}>
         <div>
-          <MdNightlight />
-          <span>Hongs Daily Note</span>
+          <MdOutlineLight />
+          <span>Daily Record</span>
         </div>
-        <span className="login">Login</span>
+        {auth ? (
+          <span className="login">Logout</span>
+        ) : (
+          <span className="login">Login</span>
+        )}
       </div>
-      <div className="inner-container">
-        <NavBar />
-        <div>{children}</div>
-      </div>
+      {auth ? (
+        <div className="inner-container">
+          <NavBar />
+          <div>{children}</div>
+        </div>
+      ) : (
+        <div className="login-container">{children}</div>
+      )}
+
       <style jsx>{`
         .container {
           height: 100%;
@@ -38,6 +48,7 @@ const Layout = ({ children }: React.PropsWithChildren) => {
         .title > div {
           display: flex;
           align-items: center;
+          column-gap: 5px;
         }
         .title .login {
           font-size: 20px;
@@ -49,6 +60,9 @@ const Layout = ({ children }: React.PropsWithChildren) => {
           height: calc(100% - 70px);
           padding: 20px 40px;
           box-sizing: border-box;
+        }
+        .login-container {
+          height: calc(100% - 70px);
         }
       `}</style>
     </div>
