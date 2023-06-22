@@ -2,32 +2,32 @@ import React from "react";
 
 const HomeGrid = () => {
   return (
-    <>
-      <div className="container">
+    <div className="container">
+      <div className="inner-container">
         <div className="images">
           <div className="imgFlex1">
-            <img src="/isp1.jpg" />
-            <img src="/isp4.jpg" />
-            <img src="/isp7.jpg" />
+            <img src="/inspiration/1.jpg" />
+            <img src="/inspiration/4.jpg" />
+            <img src="/inspiration/7.jpg" />
           </div>
         </div>
         <div className="images">
           <div className="imgFlex2">
-            <img src="/isp2.jpg" />
-            <img src="/isp5.jpg" />
-            <img src="/isp8.jpg" />
+            <img src="/inspiration/2.jpg" />
+            <img src="/inspiration/5.jpg" />
+            <img src="/inspiration/8.jpg" />
           </div>
         </div>
         <div className="images">
           <div className="imgFlex3">
-            <img src="/isp3.jpg" />
-            <img src="/isp6.jpg" />
-            <img src="/isp9.jpg" />
+            <img src="/inspiration/3.jpg" />
+            <img src="/inspiration/6.jpg" />
+            <img src="/inspiration/9.jpg" />
           </div>
         </div>
       </div>
       <style jsx>{`
-        .container {
+        .inner-container {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 20px;
@@ -61,7 +61,7 @@ const HomeGrid = () => {
           transform: scale(1.05) translateY(0);
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

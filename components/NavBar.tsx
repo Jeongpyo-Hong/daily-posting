@@ -15,27 +15,26 @@ const NavBar = () => {
       </Link>
       <Link href="/login">
         <div className={router.pathname === "/login" ? "active" : ""}>
-          Login
+          Contact
         </div>
       </Link>
       <style jsx>{`
         nav {
-          background-color: #f0f0f0;
           color: black;
-          box-sizing: border-box;
-          border-radius: 10px;
-          padding: 10px;
         }
         div {
           font-size: 20px;
           font-weight: 800;
           padding: 10px;
+          margin-bottom: 6px;
         }
         div.active {
+          background-color: #f3f3f3;
+          border-radius: 12px;
           color: tomato;
         }
-        div:hover {
-          background-color: white;
+        div:not(.active):hover {
+          background-color: #f3f3f3;
           border-radius: 10px;
         }
       `}</style>
