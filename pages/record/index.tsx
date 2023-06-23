@@ -8,7 +8,7 @@ const Posts = () => {
   return (
     <div className="container">
       <div className="main-text">Day-to-day Record</div>
-      <Link href="/posts/writing">
+      <Link href="/record/writing">
         <span className="writing">
           <MdEditDocument />
           writing
