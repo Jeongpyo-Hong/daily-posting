@@ -5,36 +5,41 @@ import { useRouter } from "next/router";
 import { auth } from "@/lib/firebase";
 
 const Layout = ({ children }: React.PropsWithChildren) => {
+  console.log(auth);
+  const isAuth = auth.app.options;
   const router = useRouter();
   const onClick = () => {
-    router.push("/");
+    router.push("/home");
   };
 
   // 로그아웃
   const logoutHandler = async () => {
-    try {
-      await auth.signOut();
-    } catch (error) {
-      console.error("로그아웃 오류: ", error);
+    if (confirm("로그아웃하시겠습니까?")) {
+      try {
+        await auth.signOut();
+        router.push("/login");
+      } catch (error) {
+        console.error("로그아웃 오류: ", error);
+      }
     }
   };
 
   return (
     <div className="container">
-      <div className="title" onClick={onClick}>
-        <div>
+      <div className="title">
+        <div onClick={onClick}>
           <MdOutlineLight />
           <span>Daily Record</span>
         </div>
-        {auth ? (
-          <span className="login">Logout</span>
-        ) : (
+        {isAuth ? (
           <span className="login" onClick={logoutHandler}>
-            Login
+            Logout
           </span>
+        ) : (
+          <span className="login">Login</span>
         )}
       </div>
-      {auth ? (
+      {isAuth ? (
         <div className="inner-container">
           <NavBar />
           <div>{children}</div>
@@ -54,15 +59,16 @@ const Layout = ({ children }: React.PropsWithChildren) => {
           justify-content: space-between;
           align-items: center;
           padding: 20px 40px;
-          cursor: pointer;
         }
         .title > div {
           display: flex;
           align-items: center;
           column-gap: 5px;
+          cursor: pointer;
         }
         .title .login {
           font-size: 20px;
+          cursor: pointer;
         }
         .inner-container {
           display: grid;
