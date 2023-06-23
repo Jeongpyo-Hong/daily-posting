@@ -42,7 +42,7 @@ const Posts = () => {
           font-weight: 800;
           color: #777777;
           margin: 20px 0 60px;
-          text-decoration: 12px underline #eee;
+          text-decoration: 14px underline #eee;
         }
         .writing {
           position: absolute;

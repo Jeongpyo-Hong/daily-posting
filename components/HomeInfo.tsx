@@ -54,7 +54,7 @@ const HomeInfo = () => {
           margin-bottom: 20px;
         }
         .title {
-          font-size: 18px;
+          font-size: 20px;
           font-weight: 800;
           margin-bottom: 14px;
           display: flex;
