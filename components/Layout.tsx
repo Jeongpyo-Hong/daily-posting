@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import { MdOutlineLight } from "react-icons/md";
 import { useRouter } from "next/router";
 import { auth } from "../lib/firebase";
 
 const Layout = ({ children }: React.PropsWithChildren) => {
-  const user = auth.currentUser;
   const router = useRouter();
+  const [isAuth, setIsAuth] = useState(false);
 
   const onClick = () => {
-    if (user) {
+    if (auth.currentUser) {
       router.push("/home");
     } else {
       router.push("/login");
@@ -32,6 +32,12 @@ const Layout = ({ children }: React.PropsWithChildren) => {
     router.push("/login");
   };
 
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      setIsAuth(!!user);
+    });
+  }, []);
+
   return (
     <div className="container">
       <div className="title">
@@ -39,7 +45,7 @@ const Layout = ({ children }: React.PropsWithChildren) => {
           <MdOutlineLight />
           <span>Daily Record</span>
         </div>
-        {user ? (
+        {isAuth ? (
           <span className="login" onClick={logoutHandler}>
             Logout
           </span>
@@ -49,7 +55,7 @@ const Layout = ({ children }: React.PropsWithChildren) => {
           </span>
         )}
       </div>
-      {user ? (
+      {isAuth ? (
         <div className="inner-container">
           <NavBar />
           <div>{children}</div>

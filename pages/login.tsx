@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 
 const Login = () => {
+  const user = auth.currentUser;
+  const [isAuth, setIsAuth] = useState(false);
+
   const router = useRouter();
   const [form, setForm] = useState({
     email: "",
@@ -31,6 +34,12 @@ const Login = () => {
       console.error("로그인 오류: ", error);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      setIsAuth(true);
+    }
+  }, []);
 
   return (
     <div className="container">

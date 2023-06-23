@@ -7,29 +7,36 @@ const HomeGrid = () => {
         <div className="images">
           <div className="imgFlex1">
             <img src="/inspiration/1.jpg" />
-            <img src="/inspiration/4.jpg" />
-            <img src="/inspiration/7.jpg" />
+            <img src="/inspiration/5.jpg" />
+            <img src="/inspiration/9.jpg" />
           </div>
         </div>
         <div className="images">
           <div className="imgFlex2">
             <img src="/inspiration/2.jpg" />
-            <img src="/inspiration/5.jpg" />
+            <img src="/inspiration/6.jpg" />
             <img src="/inspiration/8.jpg" />
           </div>
         </div>
         <div className="images">
           <div className="imgFlex3">
             <img src="/inspiration/3.jpg" />
-            <img src="/inspiration/6.jpg" />
-            <img src="/inspiration/9.jpg" />
+            <img src="/inspiration/7.jpg" />
+            <img src="/inspiration/11.jpg" />
+          </div>
+        </div>
+        <div className="images">
+          <div className="imgFlex4">
+            <img src="/inspiration/4.jpg" />
+            <img src="/inspiration/8.jpg" />
+            <img src="/inspiration/12.jpg" />
           </div>
         </div>
       </div>
       <style jsx>{`
         .inner-container {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
           gap: 20px;
         }
         .container .images {
@@ -45,6 +52,10 @@ const HomeGrid = () => {
           row-gap: 20px;
         }
         .container .images .imgFlex3 {
+          display: grid;
+          row-gap: 20px;
+        }
+        .container .images .imgFlex4 {
           display: grid;
           row-gap: 20px;
         }
