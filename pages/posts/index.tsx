@@ -7,24 +7,22 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 const Posts = () => {
   return (
     <div className="container">
-      <div className="main-text">
-        Expressing my day in writing
-        <Link href="/posts/writing">
-          <span>
-            <MdEditDocument />
-            writing
-          </span>
-        </Link>
-      </div>
+      <div className="main-text">Expressing my day in writing</div>
+      <Link href="/posts/writing">
+        <span className="writing">
+          <MdEditDocument />
+          writing
+        </span>
+      </Link>
       <div className="posts-box">
         <div className="info">
           <div className="title">
             <span>글 제목</span>
             <div>
-              <button>
+              <button className="edit">
                 <MdOutlineModeEditOutline />
               </button>
-              <button className="">
+              <button className="remove">
                 <MdDeleteOutline />
               </button>
             </div>
@@ -46,7 +44,7 @@ const Posts = () => {
           margin: 20px 0 60px;
           text-decoration: 12px underline #eee;
         }
-        .main-text span {
+        .writing {
           position: absolute;
           top: 0;
           right: 0;
