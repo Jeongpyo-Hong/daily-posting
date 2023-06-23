@@ -27,6 +27,7 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/home");
     } catch (error) {
+      alert("이메일과 패스워드를 다시 확인해주세요.");
       console.error("로그인 오류: ", error);
     }
   };

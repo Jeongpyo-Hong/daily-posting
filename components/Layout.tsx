@@ -2,26 +2,34 @@ import React from "react";
 import NavBar from "./NavBar";
 import { MdOutlineLight } from "react-icons/md";
 import { useRouter } from "next/router";
-import { auth } from "@/lib/firebase";
+import { auth } from "../lib/firebase";
 
 const Layout = ({ children }: React.PropsWithChildren) => {
-  console.log(auth);
-  const isAuth = auth.app.options;
+  const user = auth.currentUser;
   const router = useRouter();
+
   const onClick = () => {
-    router.push("/home");
+    if (user) {
+      router.push("/home");
+    } else {
+      router.push("/login");
+    }
   };
 
   // 로그아웃
   const logoutHandler = async () => {
-    if (confirm("로그아웃하시겠습니까?")) {
-      try {
-        await auth.signOut();
-        router.push("/login");
-      } catch (error) {
-        console.error("로그아웃 오류: ", error);
-      }
+    confirm("로그아웃하시겠습니까?");
+    try {
+      await auth.signOut();
+      alert("로그아웃 되었습니다.");
+      router.push("/login");
+    } catch (error) {
+      console.error("로그아웃 오류: ", error);
     }
+  };
+
+  const moveLoginPage = () => {
+    router.push("/login");
   };
 
   return (
@@ -31,15 +39,17 @@ const Layout = ({ children }: React.PropsWithChildren) => {
           <MdOutlineLight />
           <span>Daily Record</span>
         </div>
-        {isAuth ? (
+        {user ? (
           <span className="login" onClick={logoutHandler}>
             Logout
           </span>
         ) : (
-          <span className="login">Login</span>
+          <span onClick={moveLoginPage} className="login">
+            Login
+          </span>
         )}
       </div>
-      {isAuth ? (
+      {user ? (
         <div className="inner-container">
           <NavBar />
           <div>{children}</div>
