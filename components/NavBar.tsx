@@ -10,8 +10,10 @@ const NavBar = () => {
       <Link href="/home">
         <div className={router.pathname === "/home" ? "active" : ""}>Home</div>
       </Link>
-      <Link href="/post">
-        <div className={router.pathname === "/post" ? "active" : ""}>Post</div>
+      <Link href="/posts">
+        <div className={router.pathname === "/posts" ? "active" : ""}>
+          Posts
+        </div>
       </Link>
       <Link href="/contact">
         <div className={router.pathname === "/contact" ? "active" : ""}>

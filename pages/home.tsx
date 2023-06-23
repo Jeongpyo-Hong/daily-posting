@@ -9,7 +9,7 @@ const Home = () => {
       <div>
         <div className="title">
           <MdOutlineWbSunny />
-          Inspiration
+          Inspirational photos
         </div>
         <HomeGrid />
       </div>

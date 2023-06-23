@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import NavBar from "./NavBar";
 import { MdOutlineLight } from "react-icons/md";
 import { useRouter } from "next/router";
@@ -9,17 +9,18 @@ const Layout = ({ children }: React.PropsWithChildren) => {
   const onClick = () => {
     router.push("/");
   };
-  const [isAuth, setIsAuth] = useState(false);
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        router.push("/login");
-      } else {
-        setIsAuth(true);
-      }
-    });
-  }, []);
+  // 로그아웃
+  const logoutHandler = async () => {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.error("로그아웃 오류: ", error);
+    }
+  };
+
+  // 로그인한 유저인지 체크
+  // const auth = getAuth();
 
   return (
     <div className="container">
@@ -28,13 +29,15 @@ const Layout = ({ children }: React.PropsWithChildren) => {
           <MdOutlineLight />
           <span>Daily Record</span>
         </div>
-        {isAuth ? (
+        {true ? (
           <span className="login">Logout</span>
         ) : (
-          <span className="login">Login</span>
+          <span className="login" onClick={logoutHandler}>
+            Login
+          </span>
         )}
       </div>
-      {isAuth ? (
+      {true ? (
         <div className="inner-container">
           <NavBar />
           <div>{children}</div>

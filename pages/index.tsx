@@ -1,11 +1,11 @@
 import Seo from "@/components/Seo";
-import Signup from "./signup";
+import Login from "./login";
 
 const index = () => {
   return (
     <>
       <Seo />
-      <Signup />
+      <Login />
     </>
   );
 };

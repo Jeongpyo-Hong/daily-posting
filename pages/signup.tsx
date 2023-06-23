@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "../lib/firebase";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const Signup = () => {
   const router = useRouter();
@@ -19,14 +20,17 @@ const Signup = () => {
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("working");
     e.preventDefault();
     try {
-      await auth.createUserWithEmailAndPassword(email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       router.push("/home");
     } catch (error) {
       console.error("회원가입 오류: ", error);
     }
+  };
+
+  const backHandler = () => {
+    router.back();
   };
 
   return (
@@ -48,9 +52,13 @@ const Signup = () => {
           </div>
           <button type="submit">Signup</button>
         </form>
+        <span className="back" onClick={backHandler}>
+          back
+        </span>
       </div>
       <style jsx>{`
         .container {
+          position: relative;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -95,7 +103,15 @@ const Signup = () => {
           line-height: 28px;
           background-color: #a0a0a0;
           border-radius: 12px;
-          margin-top: 10px;
+          margin: 20px 0;
+        }
+        .back {
+          width: 100%;
+          font-size: 16px;
+          color: darkblue;
+          text-align: center;
+          text-decoration: underline;
+          cursor: pointer;
         }
       `}</style>
     </div>
