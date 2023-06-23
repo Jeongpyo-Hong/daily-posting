@@ -19,9 +19,6 @@ const Layout = ({ children }: React.PropsWithChildren) => {
     }
   };
 
-  // 로그인한 유저인지 체크
-  // const auth = getAuth();
-
   return (
     <div className="container">
       <div className="title" onClick={onClick}>
@@ -29,7 +26,7 @@ const Layout = ({ children }: React.PropsWithChildren) => {
           <MdOutlineLight />
           <span>Daily Record</span>
         </div>
-        {true ? (
+        {auth ? (
           <span className="login">Logout</span>
         ) : (
           <span className="login" onClick={logoutHandler}>
@@ -37,7 +34,7 @@ const Layout = ({ children }: React.PropsWithChildren) => {
           </span>
         )}
       </div>
-      {true ? (
+      {auth ? (
         <div className="inner-container">
           <NavBar />
           <div>{children}</div>

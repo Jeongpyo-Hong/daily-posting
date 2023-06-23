@@ -11,7 +11,13 @@ const NavBar = () => {
         <div className={router.pathname === "/home" ? "active" : ""}>Home</div>
       </Link>
       <Link href="/posts">
-        <div className={router.pathname === "/posts" ? "active" : ""}>
+        <div
+          className={
+            router.pathname === "/posts" || router.pathname === "/posts/writing"
+              ? "active"
+              : ""
+          }
+        >
           Posts
         </div>
       </Link>
