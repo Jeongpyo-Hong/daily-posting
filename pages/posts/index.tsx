@@ -19,10 +19,10 @@ const Posts = () => {
           <div className="title">
             <span>글 제목</span>
             <div>
-              <button className="edit">
+              <button>
                 <MdOutlineModeEditOutline />
               </button>
-              <button className="remove">
+              <button>
                 <MdDeleteOutline />
               </button>
             </div>
@@ -35,6 +35,8 @@ const Posts = () => {
       <style jsx>{`
         .container {
           position: relative;
+          width: 70%;
+          margin: 0 auto;
         }
         .main-text {
           text-align: center;
@@ -60,7 +62,6 @@ const Posts = () => {
           color: white;
         }
         .posts-box {
-          width: 70%;
           margin: 0 auto;
         }
         .posts-box .info .title {
@@ -73,14 +74,14 @@ const Posts = () => {
         }
         .posts-box .info .title button {
           color: #818181;
-          font-size: 16px;
+          font-size: 20px;
           font-weight: 800;
           margin-left: 5px;
         }
         .posts-box .info img {
           background-color: #777777;
           width: 100%;
-          height: 200px;
+          height: 300px;
           object-fit: contain;
           margin-bottom: 10px;
         }
