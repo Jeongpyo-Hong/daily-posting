@@ -7,7 +7,7 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 const Posts = () => {
   return (
     <div className="container">
-      <div className="main-text">Expressing my day in writing</div>
+      <div className="main-text">Day-to-day Record</div>
       <Link href="/posts/writing">
         <span className="writing">
           <MdEditDocument />

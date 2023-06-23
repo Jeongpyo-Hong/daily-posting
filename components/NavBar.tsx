@@ -10,20 +10,16 @@ const NavBar = () => {
       <Link href="/home">
         <div className={router.pathname === "/home" ? "active" : ""}>Home</div>
       </Link>
-      <Link href="/posts">
+      <Link href="/record">
         <div
           className={
-            router.pathname === "/posts" || router.pathname === "/posts/writing"
+            router.pathname === "/record" ||
+            router.pathname === "/record/writing"
               ? "active"
               : ""
           }
         >
-          Posts
-        </div>
-      </Link>
-      <Link href="/contact">
-        <div className={router.pathname === "/contact" ? "active" : ""}>
-          Contact
+          Record
         </div>
       </Link>
       <style jsx>{`

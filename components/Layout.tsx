@@ -43,7 +43,7 @@ const Layout = ({ children }: React.PropsWithChildren) => {
       <div className="title">
         <div onClick={onClick}>
           <MdOutlineLight />
-          <span>Daily Record</span>
+          <span>Dev Record</span>
         </div>
         {isAuth ? (
           <span className="login" onClick={logoutHandler}>

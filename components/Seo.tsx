@@ -4,7 +4,7 @@ import React from "react";
 const Seo = () => {
   return (
     <Head>
-      <title>Daily Hong</title>
+      <title>Dev Record</title>
     </Head>
   );
 };
