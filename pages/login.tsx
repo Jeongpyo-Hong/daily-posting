@@ -28,6 +28,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      alert("로그인 되었습니다.");
       router.push("/home");
     } catch (error) {
       alert("이메일과 패스워드를 다시 확인해주세요.");

@@ -7,7 +7,7 @@
   font-style: normal;
 }
 
-* {
+*:not(input[type="password"]) {
   font-family: "cafe24", "Cafe24Oneprettynight", cafe24;
 }
 

@@ -1,10 +1,8 @@
-import Link from "next/link";
-import React, { ChangeEvent, useState } from "react";
-import { MdEditDocument } from "react-icons/md";
-import { MdDeleteOutline } from "react-icons/md";
-import { MdOutlineModeEditOutline } from "react-icons/md";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import axios from "axios";
 
 const Posts = () => {
+  let id = 0;
   const [form, setForm] = useState({
     title: "",
     content: "",
@@ -15,28 +13,48 @@ const Posts = () => {
     const { name, value } = e.target;
     setForm({
       ...form,
+      [name]: value,
     });
   };
 
+  // 데이터 생성
+  const createDate = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newData = {
+      id,
+      title,
+      content,
+    };
+    try {
+      axios.post(`${process.env.NEXT_PUBLIC_DATABASE_URL}`, newData);
+      alert("작성 완료");
+    } catch (error) {
+      alert("작성 실패");
+      console.error("에러 메시지:", error);
+    }
+  };
+
   return (
-    <div className="container">
-      <button>완료</button>
+    <form onSubmit={createDate} className="container">
+      <button onClick={createDate}>완료</button>
       <div className="posts-box">
-        <form className="info">
+        <div className="info">
           <input
             className="title"
             type="text"
+            name="title"
             placeholder="제목을 입력하세요"
             value={title}
             onChange={onChange}
           />
           <textarea
             className="content"
+            name="content"
             placeholder="내용을 입력하세요"
             value={content}
             onChange={onChange}
           />
-        </form>
+        </div>
       </div>
       <style jsx>{`
         .container {
@@ -79,7 +97,7 @@ const Posts = () => {
         }
         .posts-box .info .content {
           width: 100%;
-          height: 400px;
+          height: 300px;
           font-size: 16px;
           font-weight: 800;
           margin-bottom: 20px;
@@ -93,7 +111,7 @@ const Posts = () => {
           color: #c0c0c0;
         }
       `}</style>
-    </div>
+    </form>
   );
 };
 
