@@ -8,6 +8,10 @@ const nextConfig = {
     };
     return config;
   },
+  compilerOptions: {
+    noUnusedLocals: false,
+    noUnusedParameters: false,
+  },
 };
 
 module.exports = nextConfig;

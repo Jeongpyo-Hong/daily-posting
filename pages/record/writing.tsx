@@ -1,8 +1,10 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import axios from "axios";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { v4 as uuid } from "uuid";
 
 const Posts = () => {
-  let id = 0;
+  const id = uuid();
   const [form, setForm] = useState({
     title: "",
     content: "",
@@ -18,7 +20,7 @@ const Posts = () => {
   };
 
   // 데이터 생성
-  const createDate = (e: FormEvent<HTMLFormElement>) => {
+  const createDate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newData = {
       id,
@@ -26,7 +28,7 @@ const Posts = () => {
       content,
     };
     try {
-      axios.post(`${process.env.NEXT_PUBLIC_DATABASE_URL}`, newData);
+      await addDoc(collection(db, "record"), newData);
       alert("작성 완료");
     } catch (error) {
       alert("작성 실패");
@@ -36,7 +38,7 @@ const Posts = () => {
 
   return (
     <form onSubmit={createDate} className="container">
-      <button onClick={createDate}>완료</button>
+      <button type="submit">완료</button>
       <div className="posts-box">
         <div className="info">
           <input
