@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
-import { MdOutlineLight } from "react-icons/md";
 import { useRouter } from "next/router";
 import { auth } from "../lib/firebase";
 
@@ -42,7 +41,6 @@ const Layout = ({ children }: React.PropsWithChildren) => {
     <div className="container">
       <div className="title">
         <div onClick={onClick}>
-          <MdOutlineLight />
           <span>Dev Record</span>
         </div>
         {isAuth ? (
