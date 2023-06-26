@@ -1,5 +1,5 @@
 [build]
-command = "next build"
+command = "CI=next build"
 publish = ".next"
 
 [[plugins]]
