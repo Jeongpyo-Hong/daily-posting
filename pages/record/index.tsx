@@ -3,14 +3,14 @@ import React, { useEffect } from "react";
 import { MdEditDocument } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineModeEditOutline } from "react-icons/md";
-import { storage, db } from "@/lib/firebase";
+import { db, storage } from "@/lib/firebase";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 
-const Posts = ({ data, imgUrl }: any) => {
+const Posts = ({ dataArr }: any) => {
   useEffect(() => {
-    if (data) return console.log(data, imgUrl);
-  }, [data]);
+    if (dataArr) return console.log(dataArr);
+  }, [dataArr]);
 
   return (
     <div className="container">
@@ -22,8 +22,8 @@ const Posts = ({ data, imgUrl }: any) => {
         </span>
       </Link>
       <ul className="posts-box">
-        {data.length > 0 ? (
-          data?.map((data: any) => (
+        {dataArr.length > 0 ? (
+          dataArr?.map((data: any) => (
             <li className="info" key={data.id}>
               <div className="title">
                 <span>{data.title}</span>
@@ -36,7 +36,7 @@ const Posts = ({ data, imgUrl }: any) => {
                   </button>
                 </div>
               </div>
-              <img src="/inspiration/1.jpg" />
+              <img src={data.imgUrl} />
               <div className="content">{data.content}</div>
               <div className="date">{data.nowDate}</div>
               <hr />
@@ -134,27 +134,44 @@ export const getServerSideProps = async () => {
     // DB에서 데이터 가져오기
     const q = query(collection(db, "record"), orderBy("nowDate", "desc"));
     const res = await getDocs(q);
-    const data: any[] = [];
-    res.forEach((item) => {
-      data.push(item.data());
+    const dataArr: any[] = [];
+
+    const imgUrlPromise: any = res.docs.map(async (item) => {
+      const data = item.data();
+      const imgPath = data.uploadImg;
+      const imgUrl = await getImgUrl(imgPath);
+
+      return {
+        ...data,
+        imgUrl,
+      };
     });
 
-    // Storage에서 이미지 가져오기
-    const storagRef = ref(storage, `/images/`);
-    // const imgUrl = await getDownloadURL(storagRef);
+    const results = await Promise.all(imgUrlPromise);
+    dataArr.push(...results);
 
     return {
       props: {
-        data,
-        // imgUrl,
+        dataArr,
       },
     };
   } catch (error) {
     return {
       props: {
-        data: null,
-        // imgUrl: null,
+        dataArr: null,
       },
     };
+  }
+};
+
+const getImgUrl = async (path: any) => {
+  console.log("path:", path);
+  try {
+    const storageRef = ref(storage, `/images/${path}`);
+    const imgUrl = await getDownloadURL(storageRef);
+    return imgUrl;
+  } catch (error) {
+    console.log("이미지 가져오기 에러: ", error);
+    return null;
   }
 };

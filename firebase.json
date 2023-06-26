@@ -1,0 +1,14 @@
+{
+  "firebase": "9.22.2",
+  "functions": {},
+  "hosting": {},
+  "storage": {
+    "rules": [
+      {
+        "origin": ["*"],
+        "method": ["GET"],
+        "maxAgeSeconds": 3600
+      }
+    ]
+  }
+}

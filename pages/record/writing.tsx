@@ -66,7 +66,7 @@ const Posts = () => {
     try {
       // 업로드 이미지가 있는 경우
       if (img) {
-        const imgRef = ref(storage, `images/${img}`);
+        const imgRef = ref(storage, `images/${uploadImg}`);
         uploadBytes(imgRef, img);
         await addDoc(collection(db, "record"), { ...newData, uploadImg });
       } else if (!img) {
