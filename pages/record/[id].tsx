@@ -1,28 +1,19 @@
+import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { storage, db } from "@/lib/firebase";
 import { v4 as uuid } from "uuid";
-import { useRouter } from "next/navigation";
 
-const Posts = () => {
-  let newDate = new Date();
-  let year = ("0" + newDate.getFullYear()).slice(-2);
-  let month = ("0" + newDate.getMonth()).slice(-2);
-  let date = ("0" + (newDate.getDate() + 1)).slice(-2);
-  let hour = ("0" + newDate.getHours()).slice(-2);
-  let minutes = ("0" + newDate.getMinutes()).slice(-2);
-  let seconds = ("0" + newDate.getSeconds()).slice(-2);
-
-  let nowDate = `${year}${month}${date} ${hour}:${minutes}:${seconds}`;
-
+const Update = ({ post }: any) => {
+  console.log("post", post);
   const router = useRouter();
+
   const dataId = uuid();
   const [form, setForm] = useState({
     title: "",
     content: "",
     img: null,
-    nowDate,
   });
   const { title, content, img } = form;
 
@@ -51,17 +42,17 @@ const Posts = () => {
     reader.readAsDataURL(e.target?.files[0]);
   };
 
-  // 데이터 생성
-  const createData = async (e: FormEvent<HTMLFormElement>) => {
+  // 데이터 수정
+  const updateData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (title === "" || content === "")
       return alert("제목과 내용을 입력하세요.");
     const uploadImg = uuid() + ".png";
     const newData = {
+      ...post,
       dataId,
       title,
       content,
-      nowDate,
     };
     try {
       // 업로드 이미지가 있는 경우
@@ -74,23 +65,22 @@ const Posts = () => {
         await addDoc(collection(db, "record"), newData);
       }
 
-      alert("작성 완료");
+      alert("수정 완료");
       setForm({
         title: "",
         content: "",
         img: null,
-        nowDate: "",
       });
 
       router.push("/record");
     } catch (error) {
-      alert("작성 실패");
+      alert("수정 실패");
       console.error("에러 메시지:", error);
     }
   };
 
   return (
-    <form onSubmit={createData} className="container">
+    <form onSubmit={updateData} className="container">
       <button type="submit">완료</button>
       <button className="back">뒤로가기</button>
       <div className="posts-box">
@@ -100,14 +90,14 @@ const Posts = () => {
             type="text"
             name="title"
             placeholder="제목을 입력하세요"
-            value={title}
+            value={post.title}
             onChange={onChange}
           />
           <textarea
             className="content"
             name="content"
             placeholder="내용을 입력하세요"
-            value={content}
+            value={post.content}
             onChange={onChange}
           />
           <label htmlFor="input-file">이미지 업로드: </label>
@@ -118,7 +108,7 @@ const Posts = () => {
             accept="image/*"
             onChange={onChangeImg}
           />
-          <span> {img}</span>
+          <span> {post.img}</span>
           <div id="previewImg"></div>
         </div>
       </div>
@@ -197,4 +187,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default Update;

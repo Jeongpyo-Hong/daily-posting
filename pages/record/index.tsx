@@ -1,16 +1,62 @@
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MdEditDocument } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { db, storage } from "@/lib/firebase";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
+import { useRouter } from "next/navigation";
+import { NextRouter } from "next/router";
 
 const Posts = ({ dataArr }: any) => {
+  const [posts, setPosts] = useState(dataArr);
+  console.log("posts:", posts);
+
+  // 데이터 삭제
+  const deleteData = async (id: string) => {
+    if (window.confirm("글을 삭제하시겠습니까?")) {
+      try {
+        const docRef = doc(db, "record", id);
+        await deleteDoc(docRef);
+      } catch (error) {
+        alert("글 삭제 실패");
+      }
+    }
+  };
+
   useEffect(() => {
-    if (dataArr) return console.log(dataArr);
-  }, [dataArr]);
+    const unsubscribe = onSnapshot(
+      query(collection(db, "record"), orderBy("nowDate", "desc")),
+      (snapshot) => {
+        const updatedDataArr = snapshot.docs.map((doc) => {
+          const documentId = doc.id;
+          const data = doc.data();
+
+          // 문서 데이터와 documentId를 합쳐서 반환
+          return {
+            id: documentId,
+            ...data,
+          };
+        });
+
+        setPosts(updatedDataArr);
+      }
+    );
+
+    return () => {
+      // 구독 취소
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <div className="container">
@@ -22,23 +68,30 @@ const Posts = ({ dataArr }: any) => {
         </span>
       </Link>
       <ul className="posts-box">
-        {dataArr.length > 0 ? (
-          dataArr?.map((data: any) => (
-            <li className="info" key={data.id}>
+        {posts && posts.length > 0 ? (
+          posts?.map((post: any) => (
+            <li className="info" key={post.dataId}>
               <div className="title">
-                <span>{data.title}</span>
+                <span>{post.title}</span>
                 <div>
-                  <button>
+                  <Link
+                    href={{
+                      pathname: `/record/${post.id}`,
+                      query: {
+                        post: JSON.stringify(post),
+                      },
+                    }}
+                  >
                     <MdOutlineModeEditOutline />
-                  </button>
-                  <button>
+                  </Link>
+                  <button onClick={() => deleteData(post.id)}>
                     <MdDeleteOutline />
                   </button>
                 </div>
               </div>
-              <img src={data.imgUrl} />
-              <div className="content">{data.content}</div>
-              <div className="date">{data.nowDate}</div>
+              {post.imgUrl ? <img src={post.imgUrl} /> : null}
+              <div className="content">{post.content}</div>
+              <div className="date">{post.nowDate}</div>
               <hr />
             </li>
           ))
@@ -140,10 +193,12 @@ export const getServerSideProps = async () => {
       const data = item.data();
       const imgPath = data.uploadImg;
       const imgUrl = await getImgUrl(imgPath);
+      const id = item.id;
 
       return {
         ...data,
         imgUrl,
+        id,
       };
     });
 
