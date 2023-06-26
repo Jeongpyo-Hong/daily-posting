@@ -165,10 +165,10 @@ export const getServerSideProps = async () => {
 };
 
 const getImgUrl = async (path: any) => {
-  console.log("path:", path);
   try {
     const storageRef = ref(storage, `/images/${path}`);
     const imgUrl = await getDownloadURL(storageRef);
+    console.log(imgUrl);
     return imgUrl;
   } catch (error) {
     console.log("이미지 가져오기 에러: ", error);
