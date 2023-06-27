@@ -1,6 +1,6 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { updateDoc, collection, doc } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { storage, db } from "@/lib/firebase";
 import { v4 as uuid } from "uuid";
