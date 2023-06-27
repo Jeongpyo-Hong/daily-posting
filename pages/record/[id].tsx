@@ -1,30 +1,21 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { addDoc, collection } from "firebase/firestore";
+import { updateDoc, collection, doc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { storage, db } from "@/lib/firebase";
 import { v4 as uuid } from "uuid";
-
-interface PostParam {
-  id: string;
-  dataId: string;
-  title: string;
-  content: string;
-  nowDate: string;
-  img: string;
-}
+import Link from "next/link";
 
 const Update = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const param: any = searchParams.get("post");
-  const post = JSON.parse(param);
+  const [post, setPost] = useState(JSON.parse(param));
 
-  const dataId = uuid();
   const [form, setForm] = useState({
     title: post.title,
     content: post.content,
-    img: null,
+    img: post.uploadImg,
   });
   const { title, content, img } = form;
 
@@ -64,35 +55,35 @@ const Update = () => {
       title,
       content,
     };
+    const docRef = doc(db, "record", `${post.id}`);
     try {
       // 업로드 이미지가 있는 경우
       if (img) {
         const imgRef = ref(storage, `images/${uploadImg}`);
         uploadBytes(imgRef, img);
-        await addDoc(collection(db, "record"), { ...newData, uploadImg });
+        await updateDoc(docRef, { ...newData, uploadImg });
       } else if (!img) {
         // 업로드 이미지가 없는 경우
-        await addDoc(collection(db, "record"), newData);
+        await updateDoc(docRef, newData);
       }
-
       alert("수정 완료");
-      setForm({
-        title: "",
-        content: "",
-        img: null,
-      });
-
-      router.push("/record");
+      router.push(`/record`);
     } catch (error) {
       alert("수정 실패");
       console.error("에러 메시지:", error);
     }
   };
 
+  useEffect(() => {
+    setPost(JSON.parse(param));
+  }, [param]);
+
   return (
     <form onSubmit={updateData} className="container">
       <button type="submit">완료</button>
-      <button className="back">뒤로가기</button>
+      <Link href={"/record"}>
+        <span className="back">뒤로가기</span>
+      </Link>
       <div className="posts-box">
         <div className="info">
           <input
@@ -116,7 +107,7 @@ const Update = () => {
             accept="image/*"
             onChange={onChangeImg}
           />
-          <span> {post.img}</span>
+          <span> {img}</span>
           <div id="previewImg"></div>
         </div>
       </div>
@@ -125,7 +116,8 @@ const Update = () => {
           width: 70%;
           margin: 100px auto 0;
         }
-        button {
+        button,
+        .back {
           float: right;
           font-size: 16px;
           font-weight: 800;
@@ -136,7 +128,7 @@ const Update = () => {
           color: white;
           border-radius: 12px;
         }
-        button.back {
+        .back {
           background-color: #b9b9b9;
         }
         .posts-box {

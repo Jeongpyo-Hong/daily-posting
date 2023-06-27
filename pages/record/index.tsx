@@ -14,9 +14,15 @@ import {
   query,
 } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
+import Post from "@/types";
 
-const Posts = ({ dataArr }: any) => {
+interface PostsParams {
+  dataArr: Post[];
+}
+
+const Posts = ({ dataArr }: PostsParams) => {
   const [posts, setPosts] = useState(dataArr);
+  console.log("posts:", posts);
 
   // 데이터 삭제
   const deleteData = async (id: string) => {
@@ -34,14 +40,14 @@ const Posts = ({ dataArr }: any) => {
     const unsubscribe = onSnapshot(
       query(collection(db, "record"), orderBy("nowDate", "desc")),
       (snapshot) => {
-        const updatedDataArr = snapshot.docs.map((doc) => {
+        const updatedDataArr: any = snapshot.docs.map((doc) => {
           const documentId = doc.id;
           const data = doc.data();
 
           // 문서 데이터와 documentId를 합쳐서 반환
           return {
-            id: documentId,
             ...data,
+            id: documentId,
           };
         });
 
@@ -66,7 +72,7 @@ const Posts = ({ dataArr }: any) => {
       </Link>
       <ul className="posts-box">
         {posts && posts.length > 0 ? (
-          posts?.map((post: any) => (
+          posts?.map((post: Post) => (
             <li className="info" key={post.dataId}>
               <div className="title">
                 <span>{post.title}</span>
@@ -78,6 +84,7 @@ const Posts = ({ dataArr }: any) => {
                         post: JSON.stringify(post),
                       },
                     }}
+                    as={`/record/${post.id}`}
                   >
                     <MdOutlineModeEditOutline />
                   </Link>
@@ -86,7 +93,7 @@ const Posts = ({ dataArr }: any) => {
                   </button>
                 </div>
               </div>
-              {post.imgUrl ? <img src={post.imgUrl} /> : null}
+              {post.uploadImg ? <img src={post.uploadImg} /> : null}
               <div className="content">{post.content}</div>
               <div className="date">{post.nowDate}</div>
               <hr />
@@ -189,12 +196,12 @@ export const getServerSideProps = async () => {
     const imgUrlPromise: any = res.docs.map(async (item) => {
       const data = item.data();
       const imgPath = data.uploadImg;
-      const imgUrl = await getImgUrl(imgPath);
+      const uploadImg = await getImgUrl(imgPath);
       const id = item.id;
 
       return {
         ...data,
-        imgUrl,
+        uploadImg,
         id,
       };
     });

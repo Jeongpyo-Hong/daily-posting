@@ -15,7 +15,7 @@ const NavBar = () => {
           className={
             router.pathname === "/record" ||
             router.pathname === "/record/writing" ||
-            router.pathname === "/record/update"
+            router.pathname === "/record/[id]"
               ? "active"
               : ""
           }
