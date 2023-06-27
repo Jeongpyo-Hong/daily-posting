@@ -1,21 +1,22 @@
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { updateDoc, doc } from "firebase/firestore";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { updateDoc, doc, query, collection, getDocs } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { storage, db } from "@/lib/firebase";
 import { v4 as uuid } from "uuid";
 import Link from "next/link";
 
-const Update = () => {
+const Update = ({ post }: any) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const param: any = searchParams.get("post");
-  const [post, setPost] = useState(JSON.parse(param));
+  const prsingData: any = JSON.parse(param);
+  console.log("prsingData:", prsingData);
 
   const [form, setForm] = useState({
-    title: post.title,
-    content: post.content,
-    img: post.uploadImg,
+    title: prsingData?.title,
+    content: prsingData?.content,
+    img: prsingData?.uploadImg,
   });
   const { title, content, img } = form;
 
@@ -55,7 +56,7 @@ const Update = () => {
       title,
       content,
     };
-    const docRef = doc(db, "record", `${post.id}`);
+    const docRef = doc(db, "record", `${prsingData.id}`);
     try {
       // 업로드 이미지가 있는 경우
       if (img) {
@@ -73,10 +74,6 @@ const Update = () => {
       console.error("에러 메시지:", error);
     }
   };
-
-  useEffect(() => {
-    setPost(JSON.parse(param));
-  }, [param]);
 
   return (
     <form onSubmit={updateData} className="container">
@@ -188,3 +185,31 @@ const Update = () => {
 };
 
 export default Update;
+
+export const getServerSideProps = async (context: any) => {
+  try {
+    // DB에서 데이터 가져오기
+    const parsingData = JSON.parse(context.query.post);
+    const q = collection(db, "record");
+    const res = await getDocs(q);
+    const promise = res.docs.map(async (item) => {
+      const data = item.data();
+      return data;
+    });
+
+    const results = await Promise.all(promise);
+    const post = results.filter((item) => item.dataId === parsingData.dataId);
+
+    return {
+      props: {
+        post: post[0],
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        post: null,
+      },
+    };
+  }
+};

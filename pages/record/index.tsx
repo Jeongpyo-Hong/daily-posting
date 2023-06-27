@@ -23,7 +23,6 @@ interface PostsParams {
 
 const Posts = ({ dataArr }: PostsParams) => {
   const [posts, setPosts] = useState(dataArr);
-  console.log("posts:", posts);
 
   // 데이터 삭제
   const deleteData = async (id: string) => {

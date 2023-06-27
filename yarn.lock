@@ -623,7 +623,7 @@
 
 "@netlify/plugin-nextjs@^4.38.1":
   version "4.38.1"
-  resolved "https://registry.npmjs.org/@netlify/plugin-nextjs/-/plugin-nextjs-4.38.1.tgz"
+  resolved "https://registry.yarnpkg.com/@netlify/plugin-nextjs/-/plugin-nextjs-4.38.1.tgz#dfbca71ac57f8900d0cbfc1b20145b17edecfda8"
   integrity sha512-59iDg+zQzj9PZOVEGiEhCD84AdTXtWC6C8SQylBPfGMJ7xVYIVXdulNUpSy9F7NXhjDeM1y9IPyTKKan6D5QIA==
   dependencies:
     "@netlify/esbuild" "0.14.39"
