@@ -12,6 +12,9 @@ const nextConfig = {
     noUnusedLocals: false,
     noUnusedParameters: false,
   },
+  images: {
+    domains: ["firebasestorage.googleapis.com"],
+  },
 };
 
 module.exports = nextConfig;

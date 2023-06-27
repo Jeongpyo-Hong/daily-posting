@@ -4,6 +4,7 @@ import { ref, uploadBytes } from "firebase/storage";
 import { storage, db } from "@/lib/firebase";
 import { v4 as uuid } from "uuid";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Posts = () => {
   let newDate = new Date();
@@ -92,7 +93,9 @@ const Posts = () => {
   return (
     <form onSubmit={createData} className="container">
       <button type="submit">완료</button>
-      <button className="back">뒤로가기</button>
+      <Link href={"/record"}>
+        <span className="back">뒤로가기</span>
+      </Link>
       <div className="posts-box">
         <div className="info">
           <input
@@ -127,7 +130,8 @@ const Posts = () => {
           width: 70%;
           margin: 100px auto 0;
         }
-        button {
+        button,
+        .back {
           float: right;
           font-size: 16px;
           font-weight: 800;
@@ -138,7 +142,7 @@ const Posts = () => {
           color: white;
           border-radius: 12px;
         }
-        button.back {
+        .back {
           background-color: #b9b9b9;
         }
         .posts-box {

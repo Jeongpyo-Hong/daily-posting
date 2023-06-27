@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { MdEditDocument } from "react-icons/md";
@@ -13,7 +14,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { getDownloadURL, ref } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import Post from "@/types";
 
 interface PostsParams {
@@ -39,21 +40,36 @@ const Posts = ({ dataArr }: PostsParams) => {
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, "record"), orderBy("nowDate", "desc")),
-      (snapshot) => {
-        const updatedDataArr: any = snapshot.docs.map((doc) => {
-          const documentId = doc.id;
-          const data = doc.data();
+      async (snapshot) => {
+        const updatedDataArr: any[] = await Promise.all(
+          snapshot.docs.map(async (doc) => {
+            const documentId = doc.id;
+            const data = doc.data();
+            const newUploadImg = await getNewUploadImg(data.uploadImg);
 
-          // 문서 데이터와 documentId를 합쳐서 반환
-          return {
-            ...data,
-            id: documentId,
-          };
-        });
+            // 문서 데이터와 documentId를 합쳐서 반환
+            return {
+              ...data,
+              uploadImg: newUploadImg,
+              id: documentId,
+            };
+          })
+        );
 
         setPosts(updatedDataArr);
       }
     );
+
+    const getNewUploadImg = async (path: any) => {
+      try {
+        const storageRef = ref(storage, `images/${path}`);
+        const newUploadImg = await getDownloadURL(storageRef);
+        return newUploadImg;
+      } catch (error) {
+        console.log("에러메시지: ", error);
+        return null;
+      }
+    };
 
     return () => {
       // 구독 취소
@@ -73,7 +89,7 @@ const Posts = ({ dataArr }: PostsParams) => {
       <ul className="posts-box">
         {posts && posts.length > 0 ? (
           posts?.map((post: Post) => (
-            <li className="info" key={post.dataId}>
+            <li className="info" key={post.id}>
               <div className="title">
                 <span>{post.title}</span>
                 <div>
@@ -93,7 +109,14 @@ const Posts = ({ dataArr }: PostsParams) => {
                   </button>
                 </div>
               </div>
-              {post.uploadImg ? <img src={post.uploadImg} /> : null}
+              {post.uploadImg ? (
+                <Image
+                  src={post.uploadImg}
+                  alt="record-image"
+                  width={100}
+                  height={300}
+                />
+              ) : null}
               <div className="content">{post.content}</div>
               <div className="date">{post.nowDate}</div>
               <hr />
@@ -193,16 +216,14 @@ export const getServerSideProps = async () => {
     const res = await getDocs(q);
     const dataArr: any[] = [];
 
-    const imgUrlPromise: any = res.docs.map(async (item) => {
+    const imgUrlPromise = res.docs.map(async (item) => {
       const data = item.data();
-      const imgPath = data.uploadImg;
-      const uploadImg = await getImgUrl(imgPath);
+      const newUploadImg = await getUploadImg(data.uploadImg);
       const id = item.id;
-
       return {
         ...data,
-        uploadImg,
         id,
+        uploadImg: newUploadImg,
       };
     });
 
@@ -223,14 +244,14 @@ export const getServerSideProps = async () => {
   }
 };
 
-const getImgUrl = async (path: any) => {
+export const getUploadImg = async (path: any) => {
   try {
-    const storageRef = ref(storage, `/images/${path}`);
-    const imgUrl = await getDownloadURL(storageRef);
-    console.log(imgUrl);
-    return imgUrl;
+    const storageRef = ref(storage, `images/${path}`);
+    const snapshot = await uploadBytes(storageRef, path);
+    const newUploadImg = await getDownloadURL(snapshot.ref);
+    return newUploadImg;
   } catch (error) {
-    console.log("이미지 가져오기 에러: ", error);
+    console.log("에러메시지: ", error);
     return null;
   }
 };
