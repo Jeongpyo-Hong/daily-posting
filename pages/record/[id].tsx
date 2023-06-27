@@ -7,6 +7,7 @@ import { v4 as uuid } from "uuid";
 import Link from "next/link";
 
 const Update = ({ post }: any) => {
+  console.log("post:", post);
   const router = useRouter();
   const searchParams = useSearchParams();
   const param: any = searchParams.get("post");
