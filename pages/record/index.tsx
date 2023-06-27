@@ -14,12 +14,9 @@ import {
   query,
 } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
-import { useRouter } from "next/navigation";
-import { NextRouter } from "next/router";
 
 const Posts = ({ dataArr }: any) => {
   const [posts, setPosts] = useState(dataArr);
-  console.log("posts:", posts);
 
   // 데이터 삭제
   const deleteData = async (id: string) => {

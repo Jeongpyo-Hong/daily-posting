@@ -1,18 +1,29 @@
-import { useRouter } from "next/navigation";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import { storage, db } from "@/lib/firebase";
 import { v4 as uuid } from "uuid";
 
-const Update = ({ post }: any) => {
-  console.log("post", post);
+interface PostParam {
+  id: string;
+  dataId: string;
+  title: string;
+  content: string;
+  nowDate: string;
+  img: string;
+}
+
+const Update = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const param: any = searchParams.get("post");
+  const post = JSON.parse(param);
 
   const dataId = uuid();
   const [form, setForm] = useState({
-    title: "",
-    content: "",
+    title: post.title,
+    content: post.content,
     img: null,
   });
   const { title, content, img } = form;
@@ -50,7 +61,6 @@ const Update = ({ post }: any) => {
     const uploadImg = uuid() + ".png";
     const newData = {
       ...post,
-      dataId,
       title,
       content,
     };
@@ -89,15 +99,13 @@ const Update = ({ post }: any) => {
             className="title"
             type="text"
             name="title"
-            placeholder="제목을 입력하세요"
-            value={post.title}
+            value={title}
             onChange={onChange}
           />
           <textarea
             className="content"
             name="content"
-            placeholder="내용을 입력하세요"
-            value={post.content}
+            value={content}
             onChange={onChange}
           />
           <label htmlFor="input-file">이미지 업로드: </label>
